@@ -29,12 +29,12 @@ class PokemonFetcher {
         val objects = fetchPokemonObjects()
         val sprites = objects.map { getSpriteURL(it.url) }
         return objects.zip(sprites).map { (obj, sprite) ->
-            ListPokemonItem(obj.name, sprite)
+            ListPokemonItem(obj.name, sprite, obj.url)
         }
     }
 
-    suspend fun fetchPokemonDetails(id: String): PokemonDetails {
-        val response: Pokemon = client.get(Endpoints.POKEMON.route + id).body()
+    suspend fun fetchPokemonDetails(url: String): PokemonDetails {
+        val response: Pokemon = client.get(url).body()
         return PokemonDetails(
             name = response.name,
             id = response.id.toInt(),

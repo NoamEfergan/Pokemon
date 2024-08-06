@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import networking.PokemonFetcher
 import networking.models.PokemonDetails
 
-class PokemonDetailViewModel(private val id: String) : ViewModel() {
+class PokemonDetailViewModel(private val url: String) : ViewModel() {
 
     sealed class LoadingState {
         data object Loading : LoadingState()
@@ -34,7 +34,7 @@ class PokemonDetailViewModel(private val id: String) : ViewModel() {
     fun fetchPokemon() {
         viewModelScope.launch {
             try {
-                val pokemon = fetcher.fetchPokemonDetails(id)
+                val pokemon = fetcher.fetchPokemonDetails(url)
                 _loadingState.value = PokemonDetailViewModel.LoadingState.Success(pokemon)
             } catch (e: Exception) {
                 _loadingState.value = PokemonDetailViewModel.LoadingState.Error(e.localizedMessage ?: "Unknown error")

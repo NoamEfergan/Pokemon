@@ -69,7 +69,8 @@ private fun PreviewPokemonListItem() {
     PokemonListItem(
         pokemon = ListPokemonItem(
             name = "Pikachu",
-            iconURL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+            iconURL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png",
+            passThroughURL = "https://pokeapi.co/api/v2/pokemon/1/"
         )
     )
 }
