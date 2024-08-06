@@ -1,4 +1,4 @@
-package com.example.pokemondetails.android.screens.homescreen
+package com.example.pokemondetails.android.common
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -6,7 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,8 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ErrorScreen(
-    modifier: Modifier = Modifier, onRetry: () -> Unit = {}
+fun LoadingScreen(
+    modifier: Modifier = Modifier
 ) {
     Box(modifier) {
         Column(
@@ -32,30 +33,24 @@ fun ErrorScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = "Something went wrong!",
+                text = "Loading",
                 fontFamily = FontFamily.SansSerif,
                 fontStyle = FontStyle.Italic,
                 fontSize = MaterialTheme.typography.titleLarge.fontSize,
                 fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.padding(bottom = 6.dp)
+                modifier = Modifier.padding(bottom = 32.dp)
             )
-            Text(
-                text = "Please try again.",
-                fontFamily = FontFamily.SansSerif,
-                fontStyle = FontStyle.Normal,
-                fontSize = MaterialTheme.typography.bodyMedium.fontSize,
-                fontWeight = FontWeight.Normal,
-                modifier = Modifier.padding(bottom = 18.dp)
+            CircularProgressIndicator(
+                modifier = Modifier.width(64.dp),
+                color = MaterialTheme.colorScheme.secondary,
+                trackColor = MaterialTheme.colorScheme.surfaceVariant,
             )
-            Button(onClick = onRetry) {
-                Text(text = "Retry")
-            }
         }
     }
 }
 
-@Preview(name = "ErrorScreen")
+@Preview(name = "LoadingScreen", showBackground = true)
 @Composable
-private fun PreviewErrorScreen() {
-    ErrorScreen()
+private fun PreviewLoadingScreen() {
+    LoadingScreen()
 }

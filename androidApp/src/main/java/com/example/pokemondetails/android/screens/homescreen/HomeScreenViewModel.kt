@@ -31,7 +31,7 @@ class HomeScreenViewModel : ViewModel() {
     fun loadInitialPokemon() {
         viewModelScope.launch {
             try {
-                pokemonList = fetcher.fetchPokemon()
+                pokemonList = fetcher.fetchPokemonList()
                 _loadingState.value = LoadingState.Content(pokemonList)
             } catch (e: Exception) {
                 _loadingState.value = LoadingState.Error(e.localizedMessage ?: "Unknown error")
@@ -46,7 +46,7 @@ class HomeScreenViewModel : ViewModel() {
                 _loadingState.value =
                     LoadingState.Content(currentState.pokemon, isLoadingMore = true)
                 try {
-                    val newPokemon = fetcher.fetchPokemon()
+                    val newPokemon = fetcher.fetchPokemonList()
                     pokemonList = pokemonList + newPokemon
                     _loadingState.value = LoadingState.Content(pokemonList)
                 } catch (e: Exception) {

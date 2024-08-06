@@ -9,6 +9,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.pokemondetails.android.common.ErrorScreen
+import com.example.pokemondetails.android.common.LoadingScreen
 import networking.models.ListPokemonItem
 
 @Composable
