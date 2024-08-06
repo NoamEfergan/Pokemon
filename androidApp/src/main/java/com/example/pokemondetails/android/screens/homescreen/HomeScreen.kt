@@ -1,31 +1,47 @@
 package com.example.pokemondetails.android.screens.homescreen
 
+import PokemonListScreen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import networking.models.ListPokemonItem
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: HomeScreenViewModel,
+    onItemClick: (ListPokemonItem) -> Unit,
 ) {
-    val viewModel = HomeScreenViewModel()
-    Box(modifier
-        .background(MaterialTheme.colorScheme.background)) {
-        when (val state = viewModel.loadingState.value) {
-            is HomeScreenViewModel.LoadingState.Done -> TODO()
-            is HomeScreenViewModel.LoadingState.Error -> ErrorScreen(onRetry = { viewModel.loadPokemon() })
-            HomeScreenViewModel.LoadingState.Loading -> LoadingScreen()
+    val state by viewModel.loadingState.observeAsState()
+
+    Box(
+        modifier.background(MaterialTheme.colorScheme.background)
+    ) {
+        when (val currentState = state) {
+            is HomeScreenViewModel.LoadingState.Content -> PokemonListScreen(
+                pokemonList = currentState.pokemon,
+                loadMore = { viewModel.loadMorePokemon() },
+                onItemClick = onItemClick,
+                isLoadingMore = currentState.isLoadingMore
+            )
+
+            is HomeScreenViewModel.LoadingState.Error -> ErrorScreen(
+                onRetry = { viewModel.loadInitialPokemon() },
+            )
+
+            HomeScreenViewModel.LoadingState.InitialLoading -> LoadingScreen()
             null -> LoadingScreen()
         }
     }
 }
 
-@Preview(name = "HomeScreen", showBackground = true
-)
+@Preview(name = "HomeScreen", showBackground = true)
 @Composable
 private fun PreviewHomeScreen() {
-    HomeScreen()
+    HomeScreen(viewModel = HomeScreenViewModel()) {}
 }

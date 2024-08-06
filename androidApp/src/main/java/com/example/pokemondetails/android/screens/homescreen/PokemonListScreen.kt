@@ -1,14 +1,18 @@
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -22,18 +26,10 @@ fun PokemonListScreen(
     modifier: Modifier = Modifier,
     pokemonList: List<ListPokemonItem>,
     onItemClick: (ListPokemonItem) -> Unit = {},
-    loadMore: () -> Unit = {}
+    loadMore: () -> Unit = {},
+    isLoadingMore: Boolean = false
 ) {
     val gridState = rememberLazyGridState()
-    val reachedBottom: Boolean by remember {
-        derivedStateOf {
-            val lastVisibleItem = gridState.layoutInfo.visibleItemsInfo.lastOrNull()
-            lastVisibleItem?.index != 0 && lastVisibleItem?.index == gridState.layoutInfo.totalItemsCount - buffer
-        }
-    }
-    LaunchedEffect(reachedBottom) {
-        if (reachedBottom) loadMore()
-    }
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -49,6 +45,28 @@ fun PokemonListScreen(
         ) { card ->
             PokemonListItem(pokemon = card, onItemClick = onItemClick)
         }
+
+        item(span = { GridItemSpan(2) }) {
+            if (isLoadingMore) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(gridState) {
+        snapshotFlow { gridState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
+            .collect { lastIndex ->
+                if (lastIndex != null && lastIndex >= pokemonList.size - buffer) {
+                    loadMore()
+                }
+            }
     }
 }
 

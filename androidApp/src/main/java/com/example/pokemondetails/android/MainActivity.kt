@@ -1,25 +1,20 @@
 package com.example.pokemondetails.android
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import kotlinx.coroutines.launch
-import networking.PokemonFetcher
+import com.example.pokemondetails.android.screens.homescreen.HomeScreen
+import com.example.pokemondetails.android.screens.homescreen.HomeScreenViewModel
 
 class MainActivity : ComponentActivity() {
+    val homeScreenViewModel = HomeScreenViewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -28,35 +23,21 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val scope = rememberCoroutineScope()
-                    var text by remember { mutableStateOf("Loading") }
-                    LaunchedEffect(true) {
-                        scope.launch {
-                            text = try {
-                                val fetcher = PokemonFetcher()
-                                val pokemon = fetcher.fetchPokemon()
-                                pokemon.map { it.iconURL }.joinToString { "icon: ${it.uppercase()}" }
-                            } catch (e: Exception) {
-                                e.localizedMessage ?: "error"
-                            }
-                        }
+                    HomeScreen(viewModel = homeScreenViewModel) {
+                        Log.i("Noam", "Item clicked: $it")
                     }
-                    GreetingView(text)
                 }
             }
         }
     }
 }
 
-@Composable
-fun GreetingView(text: String) {
-    Text(text = text)
-}
-
 @Preview
 @Composable
 fun DefaultPreview() {
     MyApplicationTheme {
-        GreetingView("Hello, Android!")
+        HomeScreen(viewModel = HomeScreenViewModel()) {
+            Log.i("Noam", "Item clicked: $it")
+        }
     }
 }
