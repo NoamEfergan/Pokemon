@@ -4,23 +4,24 @@ import SwiftUI
 struct PokemonListView: View {
     let pokemon: [ListPokemonItem]
     let isLoadingMore: Bool
-    let onItemClick: (ListPokemonItem) -> Void
     var body: some View {
         ScrollView {
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) { // Can be done with Array repeating too
                 ForEach(pokemon, id: \.name) { pokemon in
-                    PokemonListItem(pokemon: pokemon, onItemClick: onItemClick)
+                    NavigationLink(destination: {
+                        DetailScreen(viewModel: .init(url: pokemon.passThroughURL))
+                    }, label: {
+                        PokemonListItem(pokemon: pokemon)
+                            .tint(.black)
+                    })
                 }
             }
             ProgressView("Loading more...")
-                .frame(width: .infinity)
         }
     }
 }
 
 #Preview {
-    PokemonListView(pokemon: ListPokemonItem.companion.list, isLoadingMore: true) { pokemon in
-        print("Noam: \(pokemon)")
-    }
-    .previewLayout(.sizeThatFits)
+    PokemonListView(pokemon: ListPokemonItem.companion.list, isLoadingMore: true)
+        .previewLayout(.sizeThatFits)
 }

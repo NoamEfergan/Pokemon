@@ -6,6 +6,7 @@
 //  Copyright © 2024 orgName. All rights reserved.
 //
 
+import shared
 import SwiftUI
 
 struct HomeScreen: View {
@@ -16,9 +17,7 @@ struct HomeScreen: View {
             case .initialLoading:
                 LoadingScreen()
             case let .content(pokemon, isLoadingMore):
-                PokemonListView(pokemon: pokemon, isLoadingMore: isLoadingMore) { item in
-                    print("Noam: \(item)")
-                }
+                PokemonListView(pokemon: pokemon, isLoadingMore: isLoadingMore)
             case let .error(msg):
                 ErrorScreen(errorMsg: msg) {
                     Task {

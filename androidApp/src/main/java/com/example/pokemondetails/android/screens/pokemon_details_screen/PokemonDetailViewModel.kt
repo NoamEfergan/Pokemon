@@ -17,9 +17,6 @@ class PokemonDetailViewModel(private val url: String) : ViewModel() {
     }
 
     private val fetcher: PokemonFetcher = PokemonFetcher()
-    private val _pokemon: PokemonDetails? = null
-    val pokemon: PokemonDetails?
-        get() = _pokemon
 
     private val _loadingState = MutableLiveData<PokemonDetailViewModel.LoadingState>(
         PokemonDetailViewModel.LoadingState.Loading

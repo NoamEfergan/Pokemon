@@ -36,7 +36,7 @@ fun PokemonDetailScreen(viewModel: PokemonDetailViewModel, navController: NavCon
             }
 
             is PokemonDetailViewModel.LoadingState.Error -> {
-                ErrorScreen() {
+                ErrorScreen {
                     viewModel.fetchPokemon()
                 }
             }
