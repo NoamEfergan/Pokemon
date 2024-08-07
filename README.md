@@ -8,6 +8,10 @@ PokemonDetails is a modern Pokédex application built with Kotlin Multiplatform 
 * **Detailed Information:** View detailed information about each Pokémon, including stats, abilities, types, evolution chain, and more.
 * **Visually Appealing UI:**  Modern and intuitive user interface designed with platform-specific UI elements (Jetpack Compose for Android, SwiftUI for iOS).
 
+
+https://github.com/user-attachments/assets/8c1af19a-add9-458f-acc7-16a8dfe29dc4
+
+
 ## Technologies Used
 
 * **Kotlin Multiplatform Mobile (KMM):** Shared business logic, data layer, and networking for Android and iOS.
