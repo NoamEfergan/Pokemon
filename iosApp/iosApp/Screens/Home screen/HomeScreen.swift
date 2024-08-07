@@ -17,7 +17,11 @@ struct HomeScreen: View {
             case .initialLoading:
                 LoadingScreen()
             case let .content(pokemon, isLoadingMore):
-                PokemonListView(pokemon: pokemon, isLoadingMore: isLoadingMore)
+                PokemonListView(pokemon: pokemon, isLoadingMore: isLoadingMore) {
+                    Task {
+                        await viewModel.loadMorePokemon()
+                    }
+                }
             case let .error(msg):
                 ErrorScreen(errorMsg: msg) {
                     Task {
